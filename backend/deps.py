@@ -32,6 +32,15 @@ class Settings(BaseSettings):
 
 settings = Settings()
 
+# Debug: Print all environment variables
+import os
+print(f"DEBUG: All env vars starting with 'temp':")
+for key, value in os.environ.items():
+    if key.lower().startswith('temp'):
+        print(f"  {key} = {value}")
+print(f"DEBUG: temp_client_id from settings: {getattr(settings, 'temp_client_id', 'NOT_FOUND')}")
+print(f"DEBUG: temp_client_secret from settings: {getattr(settings, 'temp_client_secret', 'NOT_FOUND')}")
+
 # Database connection pool (global)
 db_pool: Optional[asyncpg.Pool] = None
 
