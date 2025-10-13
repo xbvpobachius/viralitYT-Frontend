@@ -25,6 +25,9 @@ class Settings(BaseSettings):
     worker_batch_size: int = 5
     upload_visibility: str = "unlisted"
     max_retries: int = 3
+    # Temporary Google credentials
+    temp_client_id: str = ""
+    temp_client_secret: str = ""
 
     class Config:
         env_file = ".env"
