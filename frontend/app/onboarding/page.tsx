@@ -49,12 +49,15 @@ function OnboardingContent() {
     e.preventDefault()
     setLoading(true)
     try {
-      await api.createAPIProject({
+      const newProject = await api.createAPIProject({
         project_name: projectName,
         client_id: clientId,
         client_secret: clientSecret,
       })
+      // Reload data to refresh the dropdowns
       await loadData()
+      // Auto-select the newly created project
+      setSelectedProject(newProject.id)
       setProjectName('')
       setClientId('')
       setClientSecret('')
