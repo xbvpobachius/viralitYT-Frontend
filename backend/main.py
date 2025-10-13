@@ -24,8 +24,12 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Temporarily allow all origins for testing
-    allow_credentials=False,  # Must be False when using wildcard
+    allow_origins=[
+        "https://viralit-yt-frontend.vercel.app",
+        "http://localhost:3000",
+        settings.frontend_base_url
+    ],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
