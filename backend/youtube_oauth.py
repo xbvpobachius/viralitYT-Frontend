@@ -84,7 +84,12 @@ async def handle_oauth_callback(code: str, state: str) -> Dict[str, Any]:
     import json
     import base64
     
-    # Decode state
+    # Decode state - add padding if needed
+    # Base64 strings should be a multiple of 4 in length
+    missing_padding = len(state) % 4
+    if missing_padding:
+        state += '=' * (4 - missing_padding)
+    
     state_data = json.loads(base64.urlsafe_b64decode(state.encode()).decode())
     project_id = UUID(state_data['project_id'])
     account_name = state_data['account_name']
