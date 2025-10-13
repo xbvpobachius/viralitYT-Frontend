@@ -181,11 +181,9 @@ function OnboardingContent() {
                     <Button type="submit" disabled={loading}>
                       {loading ? 'Creating...' : 'Add Project'}
                     </Button>
-                    {projects.length > 0 && (
-                      <Button type="button" variant="outline" onClick={() => setStep(2)}>
-                        Skip (Use Existing)
-                      </Button>
-                    )}
+                    <Button type="button" variant="outline" onClick={() => setStep(2)}>
+                      {projects.length > 0 ? 'Skip (Use Existing)' : 'Next Step'}
+                    </Button>
                   </div>
                 </form>
 
