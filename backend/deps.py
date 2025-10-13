@@ -14,10 +14,10 @@ import base64
 class Settings(BaseSettings):
     """Application settings from environment variables."""
     database_url: str
-    app_base_url: str
-    frontend_base_url: str
-    oauth_redirect_uri: str
-    encryption_key: str
+    app_base_url: str = "http://localhost:8000"
+    frontend_base_url: str = "http://localhost:3000"
+    oauth_redirect_uri: str = "http://localhost:8000/auth/youtube/callback"
+    encryption_key: str = "0000000000000000000000000000000000000000000000000000000000000000"
     ytdlp_bin: str = "yt-dlp"
     ffmpeg_bin: str = "ffmpeg"
     temp_dir: str = "/tmp"
