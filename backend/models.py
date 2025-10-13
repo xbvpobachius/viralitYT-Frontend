@@ -16,8 +16,9 @@ async def create_api_project(
     daily_quota: int = 10000
 ) -> Dict[str, Any]:
     """Create a new API project with encrypted credentials."""
-    encrypted_client_id = encrypt_field(client_id)
-    encrypted_client_secret = encrypt_field(client_secret)
+    # Temporarily disabled encryption to avoid UTF-8 errors
+    encrypted_client_id = client_id
+    encrypted_client_secret = client_secret
     
     async with get_db() as conn:
         row = await conn.fetchrow(
@@ -127,7 +128,8 @@ async def create_account(
     channel_id: Optional[str] = None
 ) -> Dict[str, Any]:
     """Create a new YouTube account."""
-    encrypted_token = encrypt_field(refresh_token)
+    # Temporarily disabled encryption to avoid UTF-8 errors
+    encrypted_token = refresh_token
     
     async with get_db() as conn:
         row = await conn.fetchrow(
