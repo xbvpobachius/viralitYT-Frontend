@@ -35,15 +35,15 @@ async def get_api_project(project_id: UUID) -> Optional[Dict[str, Any]]:
     """Get API project by ID with decrypted credentials."""
     async with get_db() as conn:
         row = await conn.fetchrow(
-            "SELECT * FROM api_projects WHERE id = $1",
+            "SELECT id, project_name, daily_quota, quota_used_today, quota_reset_at, created_at FROM api_projects WHERE id = $1",
             project_id
         )
         if not row:
             return None
         
         data = dict(row)
-        data['client_id'] = decrypt_field(data['client_id'])
-        data['client_secret'] = decrypt_field(data['client_secret'])
+        # For now, skip encrypted fields to avoid UTF-8 errors
+        # TODO: Re-enable encryption when we clean up old data
         return data
 
 
