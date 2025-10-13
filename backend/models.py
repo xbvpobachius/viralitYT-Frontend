@@ -42,8 +42,11 @@ async def get_api_project(project_id: UUID) -> Optional[Dict[str, Any]]:
             return None
         
         data = dict(row)
-        # For now, skip encrypted fields to avoid UTF-8 errors
+        # Temporary: Use environment variables to avoid UTF-8 errors
         # TODO: Re-enable encryption when we clean up old data
+        from deps import settings
+        data['client_id'] = getattr(settings, 'temp_client_id', None)
+        data['client_secret'] = getattr(settings, 'temp_client_secret', None)
         return data
 
 
