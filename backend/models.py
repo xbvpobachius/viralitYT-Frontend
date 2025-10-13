@@ -149,7 +149,8 @@ async def get_account(account_id: UUID) -> Optional[Dict[str, Any]]:
             return None
         
         data = dict(row)
-        data['oauth_refresh_token'] = decrypt_field(data['oauth_refresh_token'])
+        # Temporarily skip decryption to avoid UTF-8 errors
+        # data['oauth_refresh_token'] = decrypt_field(data['oauth_refresh_token'])
         return data
 
 
@@ -403,7 +404,8 @@ async def select_due_uploads(now: datetime, limit: int = 10) -> List[Dict[str, A
         result = []
         for row in rows:
             data = dict(row)
-            data['oauth_refresh_token'] = decrypt_field(data['oauth_refresh_token'])
+            # Temporarily skip decryption to avoid UTF-8 errors
+            # data['oauth_refresh_token'] = decrypt_field(data['oauth_refresh_token'])
             result.append(data)
         
         return result
