@@ -112,7 +112,8 @@ async def create_api_project(request: CreateAPIProjectRequest):
         )
         return project
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Error creating API project: {e}")  # Debug log
+        raise HTTPException(status_code=500, detail=f"Error creating project: {str(e)}")
 
 
 @app.get("/api-projects")
