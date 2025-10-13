@@ -45,8 +45,14 @@ async def get_api_project(project_id: UUID) -> Optional[Dict[str, Any]]:
         # Temporary: Use environment variables to avoid UTF-8 errors
         # TODO: Re-enable encryption when we clean up old data
         from deps import settings
-        data['client_id'] = getattr(settings, 'temp_client_id', None)
-        data['client_secret'] = getattr(settings, 'temp_client_secret', None)
+        client_id = getattr(settings, 'temp_client_id', None)
+        client_secret = getattr(settings, 'temp_client_secret', None)
+        
+        print(f"DEBUG: temp_client_id = {client_id}")
+        print(f"DEBUG: temp_client_secret = {client_secret}")
+        
+        data['client_id'] = client_id
+        data['client_secret'] = client_secret
         return data
 
 
