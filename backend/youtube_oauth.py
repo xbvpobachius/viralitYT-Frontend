@@ -112,8 +112,9 @@ async def start_oauth_flow(
     
     authorization_url, _ = flow.authorization_url(
         access_type='offline',
-        include_granted_scopes='true',
-        prompt='consent'  # Force consent to get refresh token
+        include_granted_scopes=True,
+        prompt='consent',  # Force consent to get refresh token
+        state=state  # ensure Google roundtrips our custom state
     )
     
     return {
