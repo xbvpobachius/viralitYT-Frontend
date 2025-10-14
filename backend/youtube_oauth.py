@@ -39,6 +39,52 @@ def create_oauth_flow(client_id: str, client_secret: str, state: str) -> Flow:
     return flow
 
 
+def _decode_oauth_state(state: str) -> Dict[str, Any]:
+    """Decode the OAuth state string robustly into a dict.
+
+    Accepts URL-safe base64 state; tolerates missing padding and encoding glitches.
+    Raises ValueError with a user-friendly message on failure.
+    """
+    import base64
+    import json
+
+    if not state:
+        raise ValueError("Invalid OAuth state. Please restart the connection.")
+
+    # Ensure proper base64 padding
+    padded_state = state
+    missing_padding = len(padded_state) % 4
+    if missing_padding:
+        padded_state += '=' * (4 - missing_padding)
+
+    raw_bytes = None
+    # Try urlsafe b64 first, then standard b64 as fallback
+    for decoder in (base64.urlsafe_b64decode, base64.b64decode):
+        try:
+            raw_bytes = decoder(padded_state.encode('ascii', errors='ignore'))
+            break
+        except Exception:
+            continue
+
+    if raw_bytes is None:
+        raise ValueError("Invalid OAuth state. Please restart the connection.")
+
+    # Try to interpret bytes as UTF-8 JSON, with a latin-1 fallback
+    for encoding in ("utf-8", "latin-1"):
+        try:
+            return json.loads(raw_bytes.decode(encoding))
+        except UnicodeDecodeError:
+            continue
+        except json.JSONDecodeError:
+            break
+
+    # Final attempt: sometimes state may already be JSON string
+    try:
+        return json.loads(state)
+    except Exception:
+        raise ValueError("Invalid OAuth state. Please restart the connection.")
+
+
 async def start_oauth_flow(
     project_id: UUID,
     account_name: str,
@@ -84,13 +130,12 @@ async def handle_oauth_callback(code: str, state: str) -> Dict[str, Any]:
     import json
     import base64
     
-    # Decode state - add padding if needed
-    # Base64 strings should be a multiple of 4 in length
-    missing_padding = len(state) % 4
-    if missing_padding:
-        state += '=' * (4 - missing_padding)
-    
-    state_data = json.loads(base64.urlsafe_b64decode(state.encode()).decode())
+    # Decode state robustly
+    try:
+        state_data = _decode_oauth_state(state)
+    except ValueError as err:
+        # Surface a friendly error up the stack
+        raise ValueError(str(err))
     project_id = UUID(state_data['project_id'])
     account_name = state_data['account_name']
     theme_slug = state_data['theme_slug']
