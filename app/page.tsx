@@ -14,7 +14,10 @@ export default function HomePage() {
         </div>
       </header>
 
-      <main className="flex-1 container mx-auto px-4 py-16">
+      <main className="relative flex-1 container mx-auto px-4 py-16 flex items-center justify-center">
+        {/* extra decorative glows */}
+        <div className="pointer-events-none absolute -top-20 left-10 h-56 w-56 rounded-full bg-[radial-gradient(closest-side,hsla(0,92%,62%,0.35),transparent)] blur-2xl" />
+        <div className="pointer-events-none absolute bottom-10 right-10 h-64 w-64 rounded-full bg-[radial-gradient(closest-side,hsla(0,92%,62%,0.3),transparent)] blur-2xl" />
         <div className="max-w-5xl mx-auto text-center space-y-10">
           <div className="space-y-4">
             <h2 className="text-5xl md:text-6xl font-extrabold tracking-tight drop-shadow-[0_0_30px_hsla(0,92%,62%,0.35)]">
@@ -60,8 +63,12 @@ export default function HomePage() {
       </main>
 
       <footer className="border-t/0 py-10">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground space-y-2">
           <p>ViralitYT © 2025. Built with Next.js, FastAPI, and YouTube Data API v3.</p>
+          <p>
+            <a href="/privacy" className="hover:underline mr-4">Privacy Policy</a>
+            <a href="/terms" className="hover:underline">Terms of Service</a>
+          </p>
         </div>
       </footer>
     </div>
